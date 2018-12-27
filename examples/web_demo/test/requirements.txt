@@ -1,0 +1,4 @@
+robotframework
+robotframework-selenium2library
+selenium
+requests

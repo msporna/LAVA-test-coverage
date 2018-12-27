@@ -1,0 +1,1 @@
+pybot --loglevel TRACE --variable CUSTOM_LIBRARY:"CustomKeywords.py" -d test_results\ selenium_test.robot

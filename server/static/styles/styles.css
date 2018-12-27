@@ -1,0 +1,456 @@
+.body-content
+{
+    background-color:#ECF0F1;
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+
+.headerClass
+{
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    height:50px;
+    background-color: #34495E;
+}
+
+.modules-add-button-class
+{
+    background-color:#27AE60;
+    color:#ECF0F1;
+    border:none;
+}
+
+.modules-remove-button-class
+{
+    background-color:#E74C3C;
+    color:#ECF0F1;
+    border:none;
+}
+
+.modules-new-module-name-class
+{
+    position:absolute;
+    top:3vh;
+    height:3vh;
+}
+
+.modules-buttons-class
+{
+    position:relative;
+    left:5vw;
+}
+
+.modules-popup-content-class
+{
+    top:1px;
+    bottom:1px;
+    right:1px;
+    left:1px;
+    height: 300px;
+}
+
+
+.modules-left-class
+{
+    position:absolute;
+    left: 1vw;
+    border-style:solid;
+    border-width:1px;
+    width: 30vw;
+    top:7vh;
+    overflow:auto;
+    max-height:50vh;
+}
+
+.modules-center-class
+{
+    position:absolute;
+    left: 35vw;
+    width: 20vw;
+    //border-style:solid;
+    //border-width:1px;
+}
+
+.modules-right-title-class
+{
+    position:absolute;
+    top:1vh;
+
+}
+
+.modules-right-title-container-class
+{
+    position:absolute;
+    width: 30vw;
+    right:1vw;
+    top:1vh;
+
+}
+
+.modules-left-title-container-class
+{
+    position:absolute;
+    left: 1vw;
+    width: 30vw;
+    top:1vh;
+}
+
+.modules-left-title-class
+{
+    position:absolute;
+    left: 1vw;
+    top:1vh;
+}
+
+.modules-new-module-span
+{
+    position:absolute;
+    right:10vw;
+    top: 1vh;
+     background-color:#27AE60;
+    color:#ECF0F1;
+    border:none;
+
+}
+
+.modules-remove-module-span
+{
+    position:absolute;
+    right:4vw;
+    top: 1vh;
+     background-color:#D35400;
+    color:#ECF0F1;
+    border:none;
+
+}
+
+.modules-right-class
+{
+    position:absolute;
+    width: 30vw;
+    right:1vw;
+    top:7vh;
+    border-style:solid;
+    border-width:1px;
+    max-height:50vh;
+    overflow:auto;
+}
+
+.new-session-modules-container
+{
+    position:absolute;
+    width: 20vw;
+    left:1vw;
+    top:12vh;
+    border-style:solid;
+    border-width:1px;
+    max-height:50vh;
+    overflow:auto;
+}
+
+.session-modules-container
+{
+    position:absolute;
+    width: 20vw;
+    left:1vw;
+    top:7vh;
+    border-style:solid;
+    border-width:1px;
+    max-height:50vh;
+    overflow:auto;
+}
+
+.new-session-modules-title
+{
+    position:absolute;
+    left:1vw;
+    top:8vh;
+}
+
+.session-modules-title
+{
+    position:absolute;
+    left:1vw;
+    top:1vh;
+}
+
+.sidebar
+{
+    position:absolute;
+    left:0;
+    top:50px;
+    width: 200px;
+    background-color:#3498DB;
+    height:400px;
+
+}
+
+.aboutButtonClass {
+    position:absolute;
+    right: 30px;
+    top: 15px;
+    font-size: 14px;
+    color:#ECF0F1;
+}
+
+.aboutButtonClass:hover
+{
+    color:#BDC3C7;
+}
+
+.modulesSettingsClass
+{
+    position:absolute;
+    right: 90px;
+    top: 15px;
+    font-size: 14px;
+    color:#ECF0F1;
+}
+
+.modules-badge
+{
+    position:absolute;
+    right:70px;
+    top:10px;
+    background-color:green;
+    font-size:12px;
+
+}
+
+.modulesSettingsClass:hover
+{
+    color:#BDC3C7;
+}
+
+.settingsSettingsClass
+{
+    position:absolute;
+    right: 170px;
+    top: 15px;
+    font-size: 14px;
+    color:#ECF0F1;
+}
+
+.settingsSettingsClass:hover
+{
+    color:#BDC3C7;
+}
+
+.header-project-name-class
+{
+    position:absolute;
+    right: 50vw;
+    top: 10px;
+    font-size: 20px;
+    color:#BDC3C7;
+    border-style:none;
+  
+
+}
+
+
+
+
+.content
+{
+    position:absolute;
+    top:50px;
+    left:0;
+    right:0;
+    bottom:0;
+}
+
+.sesContainer
+{
+    margin-left: 10px;
+    margin-top:100px;
+}
+
+.sesTitle
+{
+  
+    font-size:24px;
+}
+
+.glyphSize
+{
+    font-size:14px;
+    cursor:pointer;
+}
+
+.rowColored
+{
+    background-color:#2C3E50;
+    color:#BDC3C7;
+ 
+}
+
+.regular-paragraph-class
+{
+    position:absolute;
+    left:15px;
+    font-size:14px;
+    color:#ECF0F1;
+}
+
+
+
+.hotlink-paragraph-class
+{
+     font-size:14px;
+
+    color:#2980B9;
+}
+
+.hotlink-paragraph-class:hover
+{
+    color:#F1C40F;
+}
+
+.statusSpan
+{
+   
+}
+
+.newResults
+{
+     color:#2ECC71;
+
+}
+
+.noNewResults
+{
+     color:#BDC3C7;
+}
+
+.newSesButton
+{
+    position:absolute;
+    top: 100px;
+    left: 180px;
+    background-color:#27AE60;
+    color:#ECF0F1;
+    border:none;
+}
+
+.newSesButton:hover
+{
+    background-color:#F1C40F;
+}
+
+.filterButton
+{
+     position:absolute;
+    top: 100px;
+    left: 270px;
+    background-color:#3498DB;
+    color:#ECF0F1;
+    border:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.section-header
+{
+    background-color:#8E44AD;
+    color:#ECF0F1;
+    height: 30px;
+    font-size:20px;
+    margin-top:10px;
+
+    
+}
+
+.section-header-text
+{
+    margin-left:40%;
+}
+
+.live-indicator-header
+{
+    background-color:#E74C3C;
+    color:#ECF0F1;
+    height: 30px;
+    font-size:20px;
+}
+
+.session-details-header
+{
+    background-color:#ECF0F1;
+    color:#000000;
+    height: 30px;
+    font-size:14px;
+
+}
+
+.report-print-button-class
+{
+    position:absolute;
+    right: 5vw;
+    top:1vh;
+}
+
+.live-indicator-header-text
+{
+    margin-left:10px;
+}
+
+.stop-session-button
+{
+    margin-left: 70px;
+    height: 30px;
+    float:right;
+    background-color:#2C3E50;
+    border:none;
+    border-style:none;
+}
+
+.back-button
+{
+    height:30px;
+     background-color:#2C3E50;
+    border:none;
+    border-style:none;
+    float:left;
+}
+
+
+.files-table-filename-cell
+{
+    cursor:pointer;
+}
+
+.new-test-session-name-input
+{
+    margin-left: 15px;
+    margin-top: 5px;
+    border-bottom:solid;
+    border-right:none;
+    border-left:none;
+    border-top:none;
+    border-width:0.5px;
+    border-color:#16A085;
+    outline-width: 0;
+}
+
+.new-test-session-name-input:focus
+{
+    border-color:#F1C40F;
+}
+
+.session-action
+{
+    cursor:pointer;
+}

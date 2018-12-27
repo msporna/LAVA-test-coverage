@@ -1,0 +1,86 @@
+loading...
+<head>
+
+
+</head>
+<link href="{{url_for('static',filename='styles/vendor/bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{url_for('static',filename='styles/styles.css')}}" rel="stylesheet">
+<link href="{{url_for('static',filename='styles/vendor/bootstrap-dialog.min.css')}}" rel="stylesheet">
+<link href="{{url_for('static',filename='styles/vendor/jstree/style.css')}}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
+
+<body class="body-content">
+
+  <div class="headerClass">
+        <p class="header-project-name-class">{{project_name}}</p>
+      <!-- <a href="javascript:showModulesConfig();" class="settingsSettingsClass">Settings</a> --> <!--todo-->
+        <a href="javascript:showModulesConfig();" class="modulesSettingsClass">Modules </a>
+        <a href="javascript:showAbout();"  class="aboutButtonClass">About</a>
+        {% if sources_count>0 %}<span class="modules-badge badge badge-light">{{sources_count}}</span>{% endif %}
+   </div>
+   <div class="content">
+    <div class="sesContainer">
+        <p class="sesTitle">Test Sessions</p>   <button id="newTestSessionButton" onclick="startTestSession()" class="newSesButton">Start New</button>
+       
+        <p></p>
+        <p></p>
+
+        <table id="testSessionsTable" class="stripe" cellspacing="0" width="100%">
+            <thead>
+
+                      <th>Name</th>
+                       <th>Modules</th>
+                        <th>Live Now</th>
+                        <th>Date</th>
+                      <th>Total Coverage</th>
+                  <th></th>
+
+            </thead>
+            <tbody>
+                {% for s in sessions %}
+                <tr>
+                        <td>
+                            <a class="hotlink-paragraph-class" href="/report/{{s.ID}}">{{ s.name }}</a>
+                        </td>
+                  <td><a class="hotlink-paragraph-class" href='javascript:showSessionModules({{s.ID}},"{{s.name}}");'>{{s.covered_modules_count}}</a>/{{s.active_modules_count}}</td>
+                    <td>{{ s.is_active}}</td>
+                    <td>{{ s.start_date}}</script></td>
+                    <td>{{s.total_coverage}}%</td>
+
+
+                  <td><span class="glyphicon glyphicon-remove session-action" aria-hidden="true" onclick=removeSession({{s.ID}})></span> <span class="glyphicon glyphicon-stop session-action" aria-hidden="true" onclick=stopLiveTestSession()></span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+
+
+
+
+
+
+
+        </div>
+
+   </div>
+
+</body>
+
+<script>
+
+
+    var module_file_icon="{{url_for('static',filename='images/file_icon.png')}}";
+
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/bootstrap.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/bootstrap-dialog.min.js')}}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/tick.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/jstree.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/main.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/modules.js')}}"></script>

@@ -1,0 +1,155 @@
+
+<head>
+    <link href="{{url_for('static',filename='styles/styles.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='styles/vendor/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='styles/vendor/bootstrap-dialog.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='styles/vendor/codemirror.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+</head>
+
+
+
+<body id="reportBody" class="body-content">
+   <div id="sessionDetailsBar" class="session-details-header"><p class="live-indicator-header-text">{{session_name}} | start: {{session_start}} | end: {% if is_history %} {{session_end}} {% else %} [in progress]{% endif %}</p>
+
+
+   </div>
+    <div class="section-header"><button onclick="backToDashboard();" class="back-button">Back</button> <p id="totalCoverageHeader" class="section-header-text">Total coverage for all files</p></div> <canvas id="barChart" width="300" height="50"></canvas>
+    <p></p>
+    <p></p>
+    <div class="section-header"><p class="section-header-text">Coverage by source</p></div>
+    <table id="filesCoverageTable" class="stripe" cellspacing="0" width="100%">
+        <thead>
+        <th>Name</th>
+        <th>Module</th>
+        <th>Executable Count</th>
+        <th>Executed Count</th>
+        <th>Coverage %</th>
+        </thead>
+        <tbody>
+            {% for f in file_details_list %}
+            <tr>
+                <td class="files-table-filename-cell">{{f.filename}}</td>
+                <td>{{f.module}}</td>
+                <td>{{f.executable}}</td>
+                <td>{{f.executed}}</td>
+                <td>{{f.percent_executed}}%</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <p></p>
+    <p></p>
+
+   {% if show_templates %}
+
+   <div class="section-header"><p class="section-header-text">Coverage by template</p></div>
+    <table id="templatesCoverageTable" class="stripe" cellspacing="0" width="100%">
+        <thead>
+        <th>Name</th>
+        <th>Module</th>
+        <th>Executable Count</th>
+        <th>Executed Count</th>
+        <th>Coverage %</th>
+        </thead>
+        <tbody>
+            {% for f in template_details_list %}
+            <tr>
+                <td class="files-table-filename-cell">{{f.filename}}</td>
+                <td>{{f.module}}</td>
+                <td>{{f.executable}}</td>
+                <td>{{f.executed}}</td>
+                <td>{{f.percent_executed}}%</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <p></p>
+    <p></p>
+
+   {% endif %}
+
+    <div class="section-header"><p class="section-header-text">Covered Modules</p></div>
+
+    <table id="modulesCoverageTable" class="stripe" cellspacing="0" width="100%">
+        <thead>
+        <th>Module</th>
+        <th>Sources Count</th>
+        <th>Total Executable</th>
+        <th>Total Executed</th>
+        <th>Coverage %</th>
+
+        </thead>
+        <tbody>
+            {% for t in covered_modules %}
+            <tr>
+                <td>{{t.name}}</td>
+                <td>{{t.files_count}}</td>
+                <td>{{t.total_executable}}</td>
+                <td>{{t.total_executed}}</td>
+                <td>{{t.total_coverage}}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p></p>
+    <p></p>
+
+
+
+    {% if is_web_inject %}
+    <div class="section-header"><p class="section-header-text">Covered Routes</p></div>
+
+    <table id="routeCoverageTable" class="stripe" cellspacing="0" width="100%">
+        <thead>
+        <th>Route</th>
+        <th>Visited</th>
+
+        </thead>
+        <tbody>
+            {% for t in covered_routes_list %}
+            <tr>
+                <td>{{t.route}}</td>
+                <td>{{t.visited}}</td>
+
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+     {% endif %}
+
+    <p></p>
+    <p></p>
+
+    <script>
+
+        var total_executable ={{ total_executable }};
+        var total_executed={{ total_executed }};
+        var total_executed_percent={{total_coverage_value}};
+        var CURRENT_SESSION_ID={{session_id}};
+        var is_history="{{is_history}}";
+
+    </script>
+</body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/bootstrap.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/Chart.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/tick.js')}}"></script>
+<script src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/bootstrap-dialog.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/codemirror.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/javascript.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/print.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/session.js')}}"></script>
+

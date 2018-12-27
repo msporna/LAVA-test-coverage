@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Lava Test Coverage</title>
+    <link>https://msporna.github.io/LAVA-test-coverage/index.xml</link>
+    <description>Recent content on Lava Test Coverage</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="https://msporna.github.io/LAVA-test-coverage/index.xml" rel="self" type="application/rss+xml" />
+    
+  </channel>
+</rss>

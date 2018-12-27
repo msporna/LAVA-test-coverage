@@ -1,0 +1,14 @@
+{
+"companyName": "MichalSporna",
+"productName": "LAVA_EMULATOR",
+"dataUrl": "www.data.unityweb",
+"asmCodeUrl": "www.asm.code.unityweb",
+"asmMemoryUrl": "www.asm.memory.unityweb",
+"asmFrameworkUrl": "www.asm.framework.unityweb",
+"TOTAL_MEMORY": 268435456,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#3D203C",
+"cacheControl": {"default": "must-revalidate"}
+}

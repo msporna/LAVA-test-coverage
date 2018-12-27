@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta name="generator" content="Hugo 0.18.1" />
+            <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> Lava Test Coverage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="author" content="Michal Sporna">
+    <meta name="description" content="Open source tool for measuring test coverage - supports Unity3D, AngularJS and other web projects">
+    <meta http-equiv="content-language" content="en-us" />
+	<meta name="keywords" content="test coverage,code coverage,unity test coverage,measure test efficiency,tools for qa engineers">
+  
+
+    
+    
+    <meta name="og:site_name" content="Lava Test Coverage">
+    <meta name="og:title" content="Lava Test Coverage">
+    <meta name="og:url" content="https://msporna.github.io/LAVA-test-coverage/">
+    <meta name="og:image" content="https://msporna.github.io/LAVA-test-coverage/images/">
+    <meta name="twitter:title" content="Lava Test Coverage" />
+    <meta name="twitter:url" content="https://msporna.github.io/LAVA-test-coverage/" />
+    <meta name="twitter:image" content="https://msporna.github.io/LAVA-test-coverage/images/" />
+    <meta name="twitter:card" content="" />
+    
+    
+    
+    <link rel="canonical" href="https://msporna.github.io/LAVA-test-coverage/"/>
+
+    
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
+    
+    
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/icomoon.css">
+    
+    <link rel="stylesheet" href="css/simple-line-icons.css">
+    
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    
+    
+    <link rel="stylesheet" href="css/custom1.css">
+    
+
+    
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+    
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-21694543-7"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-21694543-7');
+	</script>
+
+
+    </head>
+    <body>
+		
+            <header role="banner" id="fh5co-header">
+        <div class="container">
+            
+            <nav class="navbar navbar-default">
+                <div class="navbar-header">
+                    
+                    <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
+                    <a class="navbar-brand" href="index.html">Lava Test Coverage</a>  <a class="github-button" href="https://github.com/msporna/LAVA-test-coverage" data-size="large" data-show-count="true" aria-label="Star msporna/LAVA-test-coverage on GitHub">Star</a>
+
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                  <ul class="nav navbar-nav navbar-right">
+
+                    
+
+                    <li class="active"><a href="#" data-nav-section="home"><span>Home</span></a></li>
+                    
+                    <li><a href="#" data-nav-section="services"><span>Features</span></a></li> 
+                    <li><a href="#" data-nav-section="work"><span>Images</span></a></li> 
+                    
+                    <li><a href="#" data-nav-section="about"><span>Contributors</span></a></li> 
+                    
+
+                    
+                    <li><a href="#" data-nav-section="contact"><span>Get it</span></a></li> 
+					
+
+                    
+                </ul>
+            </div>
+        </nav>
+        
+    </div>
+</header>
+
+
+			<section id="fh5co-home" data-section="home" style="background-image: url(images/full_image_2.jpg);" data-stellar-background-ratio="0.5">
+		<div class="gradient"></div>
+		<div class="container">
+			<div class="text-wrap">
+				<div class="text-inner">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+							<h1 class="to-animate">Improve your tests.</h1>
+							<h2 class="to-animate">Lava Test Coverage is an open source tool that generates detailed test coverage report from black box test sessions. It shows exactly which code lines were executed during testing and which were missed. It currently supports Unity3D, AngularJS and web apps written in pure JS.</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slant"></div>
+	</section>
+		
+        	<section id="fh5co-intro">
+		<div class="container">
+			<div class="row row-bottom-padded-lg">
+				
+				<div class="fh5co-block to-animate" style="background-image: url(images/img_7.jpg);">
+					<div class="overlay-darker"></div>
+					<div class="overlay"></div>
+					<div class="fh5co-text">
+						<i class="fh5co-intro-icon icon-wrench"></i>
+						<h2>Setup</h2>
+						<p>First, your project&#39;s source files are injected with probes that are supposed to report usage back to Lava&#39;s server running in your local environment.</p>
+						<p><a href="https://github.com/msporna/LAVA-test-coverage/wiki/Initial-setup" class="btn btn-primary">Related Docs</a></p>
+					</div>
+				</div>
+				
+				<div class="fh5co-block to-animate" style="background-image: url(images/img_8.jpg);">
+					<div class="overlay-darker"></div>
+					<div class="overlay"></div>
+					<div class="fh5co-text">
+						<i class="fh5co-intro-icon icon-eyeglass"></i>
+						<h2>Test</h2>
+						<p>Execute your test cases as you always do - either manually or automatically. It does not matter how you interact with the product, what matters is which parts you interact with.</p>
+						<p><a href="https://github.com/msporna/LAVA-test-coverage/wiki/Get-the-coverage" class="btn btn-primary">Related Docs</a></p>
+					</div>
+				</div>
+				
+				<div class="fh5co-block to-animate" style="background-image: url(images/img_10.jpg);">
+					<div class="overlay-darker"></div>
+					<div class="overlay"></div>
+					<div class="fh5co-text">
+						<i class="fh5co-intro-icon icon-rocket"></i>
+						<h2>Improve</h2>
+						<p>When the testing is done, a clean and detailed coverage report is available. After you identify areas of code not covered by your tests, you can update test cases to improve.</p>
+						<p><a href="https://github.com/msporna/LAVA-test-coverage/wiki/Coverage--report-explained" class="btn btn-primary">Related Docs</a></p>
+					</div>
+				</div>
+				
+			</div>
+			
+	
+			
+		</div>
+	</section>
+
+		
+       			<section id="fh5co-work" data-section="work">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 section-heading text-center">
+					<h2 class="to-animate">Images</h2>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2 subtext to-animate">
+							<h3></h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row row-bottom-padded-sm">
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="images/work_1.jpg" class="fh5co-project-item image-popup to-animate">
+						<img src="images/work_1.jpg" alt="Image2" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Dashboard</h2>
+						<span>frontend</span>
+						</div>
+					</a>
+				</div>				
+
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="images/work_2.jpg" class="fh5co-project-item image-popup to-animate">
+						<img src="images/work_2.jpg" alt="Image2" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Test Coverage Report</h2>
+						<span>frontend</span>
+						</div>
+					</a>
+				</div>				
+
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="images/work_3.jpg" class="fh5co-project-item image-popup to-animate">
+						<img src="images/work_3.jpg" alt="Image3" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Injecting Probes</h2>
+						<span>python script</span>
+						</div>
+					</a>
+				</div>				
+
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="images/work_4.jpg" class="fh5co-project-item image-popup to-animate">
+						<img src="images/work_4.jpg" alt="Image4" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Configuring Modules</h2>
+						<span>frontend</span>
+						</div>
+					</a>
+				</div>				
+
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="images/work_5.jpg" class="fh5co-project-item image-popup to-animate">
+						<img src="images/work_5.jpg" alt="Image5" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Creating New Session</h2>
+						<span>frontend</span>
+						</div>
+					</a>
+				</div>				
+
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="images/work_6.jpg" class="fh5co-project-item image-popup to-animate">
+						<img src="images/work_6.jpg" alt="Image6" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Code Lines Highlight</h2>
+						<span>green=executed; yellow=missed</span>
+						</div>
+					</a>
+				</div>				
+
+				<div class="clearfix visible-sm-block"></div>
+			
+			</div>
+			<div class="row">
+				<div class="col-md-12 text-center to-animate">
+					<p></p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+       	
+
+		
+
+		
+        		<section id="fh5co-services" data-section="services">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 section-heading text-left">
+					<h2 class=" left-border to-animate">Core Features</h2>
+					<div class="row">
+						<div class="col-md-8 subtext to-animate">
+							<h3></h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-present"></i>
+					<h3>Get Test Coverage</h3>
+					<p>Measure how far your test cases written for Unity3D, AngularJS or pure JS project reach. Measurement happens under the hood while your&rsquo;re driving your tests. The tool is designed to work with black box testing. Your interaction with the software is reflected in the coverage report.</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+						<i class="icon to-animate-2 icon-pie-chart"></i>
+						<h3>Detailed Reports</h3>
+						<p>Reports contain multiple sections showing overall coverage across all files, by each source or by module. Module contains any of the sources assigned by user - it is used to categorize sources. Also, when a specific source is clicked, details popup shows up with executed code lines highlighted in green and missed highlighted in yellow.</p>
+					</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-game-controller"></i>
+					<h3>Interactive Demo</h3>
+					<p>There is a web browser based game called LAVA_SIMULATOR taking you, the player, through the setup process of Lava Test Coverage and getting your first test coverage report in a Linux-like environment. Learn by playing! <a href='https://msporna.github.io/LAVA-test-coverage/lava_game/' target='_blank'>PLAY HERE</a> or <a href='https://youtu.be/gyeNUG-V4D0' target='_blank'>WATCH GAMEPLAY</a></p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+						<i class="icon to-animate-2 icon-disc"></i>
+						<h3>Ships with Examples</h3>
+						<p>There are 3 examples showcasing usage of the tool from A to Z:<ul><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-Unity-game'>Getting test coverage for Unity game</a></li><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-Angular-app'>getting test coverage for angular app (+selenium,java tests)</a></li><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-web-app'>getting test coverage for a js web app(+selenium,robot framework,python tests)</a></li></ul><br> </p>
+					</div>
+					<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-globe"></i>
+					<h3>Web Dashboard</h3>
+					<p>Create test sessions, configure modules and view coverage reports in a simple yet functional web dashboard.</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-magic-wand"></i>
+					<h3>Automatic Probes Injection</h3>
+					<p>Setup process is easy and automated- after setting a couple of config entries, a Python script does all of the heavy lifting for you!</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+				
+				
+			
+				
+			
+			</div>
+		</div>
+	</section>
+		
+        		<section id="fh5co-about" data-section="about">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 section-heading text-center">
+					<h2 class="to-animate">Contributors</h2>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2 subtext to-animate">
+							<h3>Currently the project has the following contributors and maintainers.</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			
+				<div class="col-md-4">
+					<div class="fh5co-person text-center to-animate">
+						<figure><img src="images/avatar.jpg" alt="Person1"></figure>
+						<h3>Michal Sporna</h3>
+						<span class="fh5co-position">Creator&amp;Main Contributor</span>
+						<p>Most of the code coverage tools are for unit tests. This tool means to be suited for functional or end2end tests done by QA engineers. As I&rsquo;m QA engineer, I wanted to cobtribute something to this community so I made this project in my spare time.</p>
+						<ul class="social social-circle">
+						
+							<li><a href="https://twitter.com/msporna"><i class="icon-twitter"></i></a></li>
+						
+						</ul>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</section>
+		
+
+		
+        		<section id="fh5co-counters" style="background-image: url(images/full_image_1.jpg);" data-stellar-background-ratio="0.5">
+		<div class="fh5co-overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 section-heading text-center to-animate">
+					<h2>Stats</h2>
+				</div>
+			</div>
+			<div class="row">
+			
+				<div class="col-md-3 col-sm-6 col-xs-12">
+					<div class="fh5co-counter to-animate">
+						<i class="fh5co-counter-icon icon-vector to-animate-2"></i>
+						<span class="fh5co-counter-number js-counter" data-from="0" data-to="62" data-speed="5000" data-refresh-interval="50">62</span>
+						<span class="fh5co-counter-label">Commits</span>
+					</div>
+				</div>
+			
+				<div class="col-md-3 col-sm-6 col-xs-12">
+					<div class="fh5co-counter to-animate">
+						<i class="fh5co-counter-icon icon-code to-animate-2"></i>
+						<span class="fh5co-counter-number js-counter" data-from="0" data-to="3700" data-speed="5000" data-refresh-interval="50">3700</span>
+						<span class="fh5co-counter-label">Lines of code</span>
+					</div>
+				</div>
+			
+				<div class="col-md-3 col-sm-6 col-xs-12">
+					<div class="fh5co-counter to-animate">
+						<i class="fh5co-counter-icon icon-cup to-animate-2"></i>
+						<span class="fh5co-counter-number js-counter" data-from="0" data-to="1987" data-speed="5000" data-refresh-interval="50">1987</span>
+						<span class="fh5co-counter-label">Cups of coffee</span>
+					</div>
+				</div>
+			
+				<div class="col-md-3 col-sm-6 col-xs-12">
+					<div class="fh5co-counter to-animate">
+						<i class="fh5co-counter-icon icon-people to-animate-2"></i>
+						<span class="fh5co-counter-number js-counter" data-from="0" data-to="1" data-speed="5000" data-refresh-interval="50">1</span>
+						<span class="fh5co-counter-label">Happy contributors</span>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</section>
+        
+
+		
+        		<section id="fh5co-contact" data-section="contact">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 section-heading text-center">
+					<h2 class="to-animate">Get It</h2>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2 subtext to-animate">
+							<h3>Lava Test Coverage can be obtained from Github page of the project. There is also link taking you straight to the wiki pages or to use case described on Medium.com.<br><br> Links below:</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row row-bottom-padded-md">
+				<div class="col-md-6 to-animate">
+					<h3></h3>
+					<ul class="fh5co-contact-info">
+					
+						<li class="fh5co-contact-address "><i class="icon-globe"></i><a href="https://github.com/msporna/LAVA-test-coverage" target="_blank">Lava Test Coverage on Github</a></li>
+					
+						<li class="fh5co-contact-address "><i class="icon-globe"></i><a href="https://github.com/msporna/LAVA-test-coverage/wiki/Initial-setup" target="_blank">Wiki</a></li>
+					
+						<li class="fh5co-contact-address "><i class="icon-globe"></i><a href="https://medium.com/@michalsporna/treasure-hunting-in-video-game-testing-a-tale-about-using-a-test-coverage-tool-with-unity3d-80ca2e434b9a" target="_blank">Getting coverage for Unity3D game - use case</a></li>
+					
+					</ul>
+				</div>
+				
+			</div>
+		</div>
+		
+	</section>
+
+        
+
+        
+        		<footer id="footer" role="contentinfo">
+		<a href="#" class="gotop js-gotop"><i class="icon-arrow-up2"></i></a>
+		<div class="container">
+			<div class="">
+				<div class="col-md-12 text-center">
+					<p>&copy; <a href="https://github.com/msporna/LAVA-test-coverage" target="_blank">Lava Test Coverage</a> created by Michal Sporna. <br>Template created by <a href="http://freehtml5.co/" target="_blank">FREEHTML5.co</a> Images: <a href="http://pexels.com/" target="_blank">Pexels</a>, <a href="http://plmd.me/" target="_blank">plmd.me</a> <br>Hugo port by: <a href="https://github.com/saey55" target="_blank">saey55</a></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<ul class="social social-circle">
+					
+						<li><a href="https://twitter.com/msporna"><i class="icon-twitter"></i></a></li>
+					
+						<li><a href="https://www.youtube.com/watch?v=Xg7GimIaQ68&amp;list=PLeUu_LODttM0TthVKuDyU2NtizPA4p3FP"><i class="icon-youtube"></i></a></li>
+						
+								
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+        
+
+        	
+	<script src="js/jquery.min.js"></script>
+	
+	<script src="js/jquery.easing.1.3.js"></script>
+	
+	<script src="js/bootstrap.min.js"></script>
+	
+	<script src="js/jquery.waypoints.min.js"></script>
+	
+	<script src="js/jquery.stellar.min.js"></script>
+	
+	<script src="js/jquery.countTo.js"></script>
+	
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/magnific-popup-options.js"></script>
+	
+	
+	
+	<script src="js/main.js"></script>
+
+    </body>
+</html>
