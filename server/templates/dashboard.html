@@ -1,4 +1,4 @@
-loading...
+loading LAVA...
 <head>
 
 
@@ -7,64 +7,82 @@ loading...
 <link href="{{url_for('static',filename='styles/styles.css')}}" rel="stylesheet">
 <link href="{{url_for('static',filename='styles/vendor/bootstrap-dialog.min.css')}}" rel="stylesheet">
 <link href="{{url_for('static',filename='styles/vendor/jstree/style.css')}}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
+<link href="{{url_for('static',filename='styles/vendor/selectize.default.css')}}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='styles/vendor/datatables.min.css')}}"/>
 
 <body class="body-content">
 
-  <div class="headerClass">
-        <p class="header-project-name-class">{{project_name}}</p>
-      <!-- <a href="javascript:showModulesConfig();" class="settingsSettingsClass">Settings</a> --> <!--todo-->
+    <div class="headerClass">
+        <p class="header-project-name-class"><a class="project-name-class" href="javascript:showSetProjectNamePopup();">{{project_name}}</a></p>
+        <!-- <a href="javascript:showModulesConfig();" class="settingsSettingsClass">Settings</a> --> <!--todo-->
+        <a href="javascript:showTagsConfig();" class="tagsSettingsClass">Tags </a>
+        <a href="javascript:showUsersConfig();" class="usersSettingsClass">Users </a>
         <a href="javascript:showModulesConfig();" class="modulesSettingsClass">Modules </a>
-        <a href="javascript:showAbout();"  class="aboutButtonClass">About</a>
+        <a href="javascript:showAbout();" class="aboutButtonClass">About</a>
         {% if sources_count>0 %}<span class="modules-badge badge badge-light">{{sources_count}}</span>{% endif %}
-   </div>
+    </div>
    <div class="content">
-    <div class="sesContainer">
-        <p class="sesTitle">Test Sessions</p>   <button id="newTestSessionButton" onclick="startTestSession()" class="newSesButton">Start New</button>
-       
-        <p></p>
-        <p></p>
+   {% if coverage_status_fail==true %}
+       <div id="coverageGoalContainer" class="coverage-goal-container coverage-goal-container-fail">
+   {% else %}
+           <div id="coverageGoalContainer" class="coverage-goal-container">
+               {% endif %}
+               <p class="coverage-goal-entry">Coverage Goal: <a href="javascript:setMinCoverageValueGoal()">{{min_coverage_value}}%</a></p>
+               <p  class="coverage-goal-entry">Current Coverage: <span id="buildTotalCoverageValue">{{total_build_coverage}}% </span></p>
+               <span class="coverage-goal-entry">
+                   Calculated from all sessions for the build (<a href="javascript:switchCoverageGoalBuild()"><span id="buildTotalCoverageBuild">{{latest_build_num}}</span></a>) <a id="generateBuildReportLink" href="javascript:generateBuildReport({{latest_build_num}},'{{latest_tag_name}}')">Generate Report</a></p>
+                   <p class="coverage-goal-entry">Related tag: <span id="buildTotalCoverageRelatedTag">{{latest_tag_name}}</span></p>
+</div>             
+           <div class="sesContainer">
+               <p class="sesTitle">Test Sessions</p>   <button id="newTestSessionButton" onclick="startTestSession()" class="newSesButton">Start New</button>
 
-        <table id="testSessionsTable" class="stripe" cellspacing="0" width="100%">
-            <thead>
+               <p></p>
+               <p></p>
 
-                      <th>Name</th>
-                       <th>Modules</th>
-                        <th>Live Now</th>
-                        <th>Date</th>
-                      <th>Total Coverage</th>
-                  <th></th>
+               <table id="testSessionsTable" class="stripe" cellspacing="0" width="100%">
+                   <thead>
 
-            </thead>
-            <tbody>
-                {% for s in sessions %}
-                <tr>
-                        <td>
-                            <a class="hotlink-paragraph-class" href="/report/{{s.ID}}">{{ s.name }}</a>
-                        </td>
-                  <td><a class="hotlink-paragraph-class" href='javascript:showSessionModules({{s.ID}},"{{s.name}}");'>{{s.covered_modules_count}}</a>/{{s.active_modules_count}}</td>
-                    <td>{{ s.is_active}}</td>
-                    <td>{{ s.start_date}}</script></td>
-                    <td>{{s.total_coverage}}%</td>
+                   <th>Name</th>
+                   <th>Build</th>
+                   <th>Tag</th>
+                   <th>Owner</th>
+                   <th>Modules</th>
+                   <th>Live Now</th>
+                   <th>Create Date</th>
+                   <th>Coverage</th>
+                   <th></th>
 
-
-                  <td><span class="glyphicon glyphicon-remove session-action" aria-hidden="true" onclick=removeSession({{s.ID}})></span> <span class="glyphicon glyphicon-stop session-action" aria-hidden="true" onclick=stopLiveTestSession()></span></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-
-
-
+                   </thead>
+                   <tbody>
+                       {% for s in sessions %}
+                       <tr>
+                           <td>
+                               <a class="hotlink-paragraph-class" href="/report/{{s.ID}}">{{ s.name }}</a>
+                           </td>
+                           <td>{{s.build}}</td>
+                           <td>{{s.tag}}</td>
+                           <td>{{s.owner}}</td>
+                           <td><a class="hotlink-paragraph-class" href='javascript:showSessionModules({{s.ID}},"{{s.name}}");'>{{s.covered_modules_count}}</a>/{{s.active_modules_count}}</td>
+                           <td>{{ s.is_active}}</td>
+                           <td>{{ s.start_date}}</script></td>
+                           <td>{{s.total_coverage}}%</td>
 
 
 
+                           <td><span class="glyphicon glyphicon-remove session-action" aria-hidden="true" onclick=removeSession({{s.ID}},"{{s.name}}")></span> 
+                                {% if s.is_active=="true" %}
+                               <span class="glyphicon glyphicon-stop session-action" aria-hidden="true" onclick=stopLiveTestSession()></span>
+                               {% endif %}
+                           </td>
+                       </tr>
+                       {% endfor %}
+                   </tbody>
+               </table>
 
 
-        </div>
+           </div>
 
-   </div>
+       </div>
 
 </body>
 
@@ -72,15 +90,18 @@ loading...
 
 
     var module_file_icon="{{url_for('static',filename='images/file_icon.png')}}";
-
+    var APP_VERSION = "{{app_version}}"
 
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/bootstrap.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/bootstrap-dialog.min.js')}}"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/datatables.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/tick.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/jstree.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/selectize.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/main.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/modules.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/users.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/tags.js')}}"></script>

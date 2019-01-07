@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2018 by Michal Sporna and contributors.  See AUTHORS
+Copyright (c) 2016-2019 by Michal Sporna and contributors.  See AUTHORS
 for more details.
 
 Some rights reserved.
@@ -38,6 +38,7 @@ var filesCoverageTable;
 var templateCoverageTable;
 var routeCoverageTable;
 var modulesCoverageTable;
+var callTimelineTable;
 
 
 $(document).ready(function () {
@@ -54,22 +55,30 @@ function initReportPage() {
     filesCoverageTable = $('#filesCoverageTable').DataTable({
         "order": [
             [4, "desc"]
-        ]
+        ],
+        "lengthMenu": [[5,10, 25, 50,100, -1], [5,10, 25, 50,100, "All"]]
     });
 
     templateCoverageTable = $("#templatesCoverageTable").DataTable({
         "order": [
             [4, "desc"]
-        ]
+        ],
+        "lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]]
     });
 
     routeCoverageTable = $("#routeCoverageTable").DataTable();
+
     modulesCoverageTable = $("#modulesCoverageTable").DataTable({
         "order": [
             [4, "desc"]
-        ]
+        ],
+        "lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]]
     });
 
+    callTimelineTable = $("#callTimelineTable").DataTable({
+        "ordering": false,
+        "lengthMenu": [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]]
+    });
 
 
     //show which lines were executed inside a file when file name is clicked

@@ -1,5 +1,21 @@
 # LAVA Changelog
 
+## Version 3 (01.2019)
+
+- added Android (Java) support along with helper class and example
+- dropped Angular support (deploying example app for testing gave me a headache...)
+- added test session tags - each test session is required to have 1 tag now, for instance release name.
+- added build number for test session - each test session must have a related build number now
+- added test session owners - create users and assign owner to newly created test sessions
+- added total build coverage - total coverage for all test sessions related to the latest build number
+- added report generation for build (summarizing coverage from all sessions related to it)
+- added stats timeline to the report page - view source lines sorted by execution time, ascending
+- added custom values- it is now possible to set custom value to a code line and it will be sent to LAVA and displayed on the report
+- added html output - when coverage session is done, html report is saved to drive (at the time of ending the coverage session)
+- multiple bugfixes
+- project folder structure reorganized a little bit
+- database schema updated to version 3
+
 ## Version 2.2.3
 
 - squashed all commits to tidy up 

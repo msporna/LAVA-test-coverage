@@ -1,10 +1,10 @@
 {
-  "config_ver":2,
-  "last_revision":4.2018,
+  "config_ver":3,
+  "last_revision":1.2019,
   "instrument_server_url": "http://localhost:5000",
   "source_root_absolute_path": "",
   "web_routes_available": [],
   "source_to_exclude":[],
-  "angular_main_file_name":"",
-  "INJECT_MODE": "web|angular|unity"
+  "android_lava_helper_namespace":"",
+  "INJECT_MODE": "web|android|unity"
 }

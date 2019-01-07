@@ -4,16 +4,17 @@
     <link href="{{url_for('static',filename='styles/vendor/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{url_for('static',filename='styles/vendor/bootstrap-dialog.min.css')}}" rel="stylesheet">
     <link href="{{url_for('static',filename='styles/vendor/codemirror.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <link href="{{url_for('static',filename='styles/vendor/datatables.min.css')}}" rel="stylesheet">
 </head>
 
 
 
 <body id="reportBody" class="body-content">
-   <div id="sessionDetailsBar" class="session-details-header"><p class="live-indicator-header-text">{{session_name}} | start: {{session_start}} | end: {% if is_history %} {{session_end}} {% else %} [in progress]{% endif %}</p>
+    <div id="sessionDetailsBar" class="session-details-header">
+        <p class="live-indicator-header-text">{{session_name}} (build: {{build_number}}, tag: {{session_tag}}) | start: {{session_start}} | end: {% if is_history %} {{session_end}} {% else %} [in progress] {% endif %}</p>
 
 
-   </div>
+    </div>
     <div class="section-header"><button onclick="backToDashboard();" class="back-button">Back</button> <p id="totalCoverageHeader" class="section-header-text">Total coverage for all files</p></div> <canvas id="barChart" width="300" height="50"></canvas>
     <p></p>
     <p></p>
@@ -44,9 +45,9 @@
     <p></p>
     <p></p>
 
-   {% if show_templates %}
+    {% if show_templates %}
 
-   <div class="section-header"><p class="section-header-text">Coverage by template</p></div>
+    <div class="section-header"><p class="section-header-text">Coverage by template</p></div>
     <table id="templatesCoverageTable" class="stripe" cellspacing="0" width="100%">
         <thead>
         <th>Name</th>
@@ -73,7 +74,7 @@
     <p></p>
     <p></p>
 
-   {% endif %}
+    {% endif %}
 
     <div class="section-header"><p class="section-header-text">Covered Modules</p></div>
 
@@ -125,28 +126,56 @@
         </tbody>
     </table>
 
-     {% endif %}
+    {% endif %}
+
 
     <p></p>
     <p></p>
+
+    {% if has_timeline_entries %}
+    <div class="section-header"><p class="section-header-text">Call Timeline (sources in execution order)</p></div>
+
+    <table id="callTimelineTable" class="stripe" cellspacing="0" width="100%">
+        <thead>
+        <th>Source</th>
+        <th>Line</th>
+        <th>Send Time</th>
+        <th>Custom Value</th>
+        </thead>
+
+        <tbody>
+            {% for te in timeline_entries %}
+            <tr>
+                <td>{{te.filename}}</td>
+                <td>{{te.line}}</td>
+                <td>{{te.send_time}}</td>
+                <td>{{te.custom_value}}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
 
     <script>
 
         var total_executable ={{ total_executable }};
         var total_executed={{ total_executed }};
         var total_executed_percent={{total_coverage_value}};
-        var CURRENT_SESSION_ID={{session_id}};
-        var is_history="{{is_history}}";
+        var CURRENT_SESSION_ID="{{session_id}}";
+        var is_history = "{{is_history}}";
+        
 
     </script>
 </body>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/bootstrap.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/Chart.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/tick.js')}}"></script>
-<script src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/datatables.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/bootstrap-dialog.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/codemirror.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='scripts/vendor/javascript.js')}}"></script>

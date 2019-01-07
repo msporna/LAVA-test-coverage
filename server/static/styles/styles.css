@@ -143,30 +143,55 @@
     position:absolute;
     width: 20vw;
     left:1vw;
-    top:12vh;
+    top:39vh;
     border-style:solid;
     border-width:1px;
-    max-height:50vh;
+    max-height:30vh;
     overflow:auto;
 }
 
-.session-modules-container
-{
-    position:absolute;
+.new-session-tags-row {
+    position: absolute;
     width: 20vw;
-    left:1vw;
-    top:7vh;
-    border-style:solid;
-    border-width:1px;
-    max-height:50vh;
-    overflow:auto;
+    left: 1vw;
+    top: 15vh;
+}
+
+.new-session-users-row {
+    position: absolute;
+    width: 20vw;
+    left: 1vw;
+    top: 25vh;
+}
+
+.new-test-session-build-input {
+    margin-left: 15px;
+    margin-top: 15px;
+    border-bottom: solid;
+    border-right: none;
+    border-left: none;
+    border-top: none;
+    border-width: 0.5px;
+    border-color: #16A085;
+    outline-width: 0;
+}
+
+.session-modules-container {
+    position: absolute;
+    width: 20vw;
+    left: 1vw;
+    top: 7vh;
+    border-style: solid;
+    border-width: 1px;
+    max-height: 50vh;
+    overflow: auto;
 }
 
 .new-session-modules-title
 {
     position:absolute;
     left:1vw;
-    top:8vh;
+    top:35vh;
 }
 
 .session-modules-title
@@ -209,14 +234,37 @@
     color:#ECF0F1;
 }
 
-.modules-badge
-{
-    position:absolute;
-    right:70px;
-    top:10px;
-    background-color:green;
-    font-size:12px;
+.usersSettingsClass {
+    position: absolute;
+    right: 165px;
+    top: 15px;
+    font-size: 14px;
+    color: #ECF0F1;
+}
 
+    .usersSettingsClass:hover {
+        color: #BDC3C7;
+    }
+
+.tagsSettingsClass {
+    position: absolute;
+    right: 220px;
+    top: 15px;
+    font-size: 14px;
+    color: #ECF0F1;
+}
+
+    .tagsSettingsClass:hover {
+        color: #BDC3C7;
+    }
+
+
+.modules-badge {
+    position: absolute;
+    right: 70px;
+    top: 10px;
+    background-color: green;
+    font-size: 12px;
 }
 
 .modulesSettingsClass:hover
@@ -238,28 +286,35 @@
     color:#BDC3C7;
 }
 
-.header-project-name-class
-{
-    position:absolute;
+.header-project-name-class {
+    position: absolute;
     right: 50vw;
     top: 10px;
     font-size: 20px;
-    color:#BDC3C7;
+    color: #27AE60;
     border-style:none;
-  
-
 }
 
+.project-name-class {
+    color: #27AE60;
+}
+
+    .project-name-class:hover {
+        color: #2ECC71;
+    }
 
 
-
-.content
+.user-config-popup-controls-div
 {
-    position:absolute;
-    top:50px;
-    left:0;
-    right:0;
-    bottom:0;
+    background-color:red;
+}
+
+.content {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .sesContainer
@@ -453,4 +508,25 @@
 .session-action
 {
     cursor:pointer;
+}
+
+.coverage-goal-container {
+    position: absolute;
+    background-color: #27ae6061;
+    width: 30vw;
+    height: 19vh;
+    right:5vw;
+    top: 2vh;
+}
+
+.coverage-goal-container-fail{
+    background-color: #F1C40F;
+}
+
+.coverage-goal-entry{
+    margin-left:2px;
+}
+
+.jstree_hide_checkbox > i.jstree-checkbox {
+    display: none
 }

@@ -1,5 +1,5 @@
 '''
-Copyright (c) 2016-2018 by Michal Sporna and contributors.  See AUTHORS
+Copyright (c) 2016-2019 by Michal Sporna and contributors.  See AUTHORS
 for more details.
 
 Some rights reserved.
@@ -51,6 +51,7 @@ from terminaltables import AsciiTable
 from colorclass import Color
 import pickle
 import sys
+import logging
 
 
 class Instrumenter:
@@ -80,12 +81,13 @@ class Instrumenter:
         # instrumented; skip index.html
         self.TEMPLATES_TO_INSTRUMENT = []
         self.ROUTES_TO_INSTRUMENT = []
-        self.INJECT_MODE = ''  # unity,web,angular
+        self.INJECT_MODE = ''  # unity,web,android
         self.SOURCE_ABSOLUTE_PATH = ''
         self.FILES_LINE_COUNT = []
         self.EXTENSION = ''
-        self.ANGULAR_MAIN_FILENAME = ''
+        self.ANGULAR_MAIN_FILENAME = '' # obsolete 
         self.TS_MODULE_PATH = ''
+        self.ANDROID_LAVA_HELPER_IMPORT_NAMESPACE='' # lava helper must be imported to each instrumented file; location is unknown. This specifies location of lava helper class within android project.
         self.INDEX_FILE_PATH = ''  # expecting index.html in source root
         # expecting [self.angular_main_filename] in source root
         self.ANGULAR_INSTANTIATE_FILE = ''
@@ -102,6 +104,7 @@ class Instrumenter:
             (r'\b(default)\b\:', "branch_switch")
 
         ]
+        # angular is obsolete 
         self.ANGULAR_REGEX_LIST = [
             (
                 r'[\w]+\([\w\s\:\,\=\{\}\[\]]*\)[\:\<\>]*[\s]*[\w\[\]\d\(\)\<\>]*[\s]*[\{]',
@@ -116,9 +119,20 @@ class Instrumenter:
             (r'.*(while|for|foreach)[\s]*\(.*\)[\s]*\{', 'loop')
         ]
 
+        self.JAVA_REGEX_LIST = [
+            (r'[\w]+[\s]+[\w]+[\s]*\(.*\)[\s]*\{', "function"),
+            (r'(else)?[\s]*(if)[\s]*\(.*\)[\s]*\{', 'branch_if'),
+            (r'\b(else)\b[\s]*\{', 'branch_else'),
+            (r'(default|case).*\:.*', 'branch_switch'),
+            (r'.*(while|for|foreach)[\s]*\(.*\)[\s]*\{', 'loop')
+        ]
+
         self.UPLOAD_ENTRIES = []
         # source file name, b64 original content (before injecting probes)
         self.SOURCE_ORIGINAL_CONTENT = {}
+
+        # init logging 
+        logging.basicConfig(filename='lava.log',level=logging.INFO)
 
     def prepare(self, config_path):
         self.CONFIG_PATH = config_path
@@ -127,13 +141,13 @@ class Instrumenter:
             config = json.load(config_file)
             self.INJECT_MODE = config["INJECT_MODE"]
             self.SERVER_URL = config["instrument_server_url"]
-            self.ANGULAR_MAIN_FILENAME = config["angular_main_file_name"]
+            # self.ANGULAR_MAIN_FILENAME = config["angular_main_file_name"]
             self.SOURCE_ABSOLUTE_PATH = self.convert_path_to_unix(
                 os.path.abspath(config["source_root_absolute_path"]))
-            self.ANGULAR_INSTANTIATE_FILE = self.convert_path_to_unix(
-                os.path.join(self.SOURCE_ABSOLUTE_PATH, self.ANGULAR_MAIN_FILENAME))
+            # self.ANGULAR_INSTANTIATE_FILE = self.convert_path_to_unix(os.path.join(self.SOURCE_ABSOLUTE_PATH, self.ANGULAR_MAIN_FILENAME))
             self.INDEX_FILE_PATH = self.convert_path_to_unix(
                 os.path.join(self.SOURCE_ABSOLUTE_PATH, 'index.html'))
+            self.ANDROID_LAVA_HELPER_IMPORT_NAMESPACE=config["android_lava_helper_namespace"]
 
             # send source absolute path
             url = self.SERVER_URL + "/" + self.SET_CONFIG_VALUES_METHOD
@@ -150,28 +164,37 @@ class Instrumenter:
             self.JS_TO_INJECT = self.get_path_to_instrumenter_js()
             self.TS_MODULE_PATH = self.get_path_to_ts_module()
 
+        logging.info('Config loaded.')
+
         if self.INJECT_MODE == "unity":
             self.EXTENSION = "*.cs"
         elif self.INJECT_MODE == "web":
             self.EXTENSION = "*.js"
         elif self.INJECT_MODE == "angular":
+            self.print_info(Color('{autored}[ERROR] {/autored}') +
+                  'As of version 3 of LAVA code coverage Angular is not supported anymore. For Angular support, use version 2 of LAVA.')
+            return  # if source of user's app was already instrumented, cancel.
             self.EXTENSION = "*.ts"
+        elif self.INJECT_MODE=="android":
+            self.EXTENSION="*.java"
 
         # actions:
         if self.check_if_instrument_exists():
-            print(Color('{autored}[ERROR] {/autored}') +
-                  'It seems like the specified source was previously instrumented. Please use this tool only on fresh source (remove and clone again).')
+            self.print_info(Color('{autored}[ERROR] {/autored}') +
+                  'It seems like the specified source was previously instrumented. Please use this tool only on fresh source (remove and clone again?).')
             return  # if source of user's app was already instrumented, cancel.
 
+     
         self.detect_sources()
         self.detect_templates()
 
-        print("Injecting...")
-        self.inject_required_scripts()  # to index.html
+        
+        self.print_info("injecting...")
+        self.inject_required_scripts()  # to index.html (applies to web & angular only)
         self.insert_instrument_function_into_templates()  # to other templates if exist
-        self.insert_instrument_function()  # to js or source files
-        print("Done")
-        print("Uploading...")
+        self.insert_instrument_function()  # to source files
+        self.print_info("injecting done...")
+        self.print_info("uploading...")
         # update list of the files in the project root [js and html only]
         # send current file list that is under instrumentation to backend
         self.update_file_list()
@@ -180,11 +203,13 @@ class Instrumenter:
         # upload executable lines
         self.upload_executable_lines_count()
 
-        self.save_instrument_token()
-        print("Done")
+        
+        self.print_info("uploading done.")
 
         # show summary of upload
         self.print_table(["Upload to lava DB", "Status"], self.UPLOAD_ENTRIES)
+
+        self.save_instrument_token()
 
     def check_if_instrument_exists(self):
         '''
@@ -231,17 +256,17 @@ class Instrumenter:
         with open(os.path.join(self.SOURCE_ABSOLUTE_PATH, "lava.pkl"), "wb") as file:
             pickle.dump(config_entry, file)
 
-        print(Color(
+        self.print_info(Color(
             '\n {autogreen}Successfully stored instrumentation token: ' + token + '{/autogreen}'))
 
     def get_path_to_instrumenter_js(self):
         instrument_js_filename = "instrument.js"
-        path = '../inject_js/' + instrument_js_filename
+        path = '../helpers/javascript/' + instrument_js_filename
         return path
 
     def get_path_to_ts_module(self):
         module_filename = "instrumenter.ts"
-        path = '../typescript_module/lava_test_coverage/' + module_filename
+        path = '../helpers/typescript_module/lava_test_coverage/' + module_filename
         return path
 
     def convert_path_to_unix(self, path):
@@ -257,7 +282,8 @@ class Instrumenter:
         -skip files from exclude list
         :return:
         '''
-        print(Color('{autoblue}Detecting Sources...{/autoblue}'))
+        logging.info('Detecting sources started')
+        self.print_info(Color('{autoblue}Detecting Sources...{/autoblue}'))
         detected_files_list = []
 
         for root, dirnames, filenames in os.walk(self.SOURCE_ABSOLUTE_PATH):
@@ -288,11 +314,20 @@ class Instrumenter:
             self.print_table(["Detected Sources"], detected_files_list)
 
     def check_if_file_should_be_skipped(self, file_path):
+        '''
+        skip lava related files, that could be found in the sources
+        '''
         if self.INJECT_MODE == "angular":
             if os.path.basename(file_path) == os.path.basename(
                     self.ANGULAR_INSTANTIATE_FILE):
                 return True
             elif os.path.basename(file_path) == os.path.basename(self.TS_MODULE_PATH):
+                return True
+        elif self.INJECT_MODE=="android":
+            if os.path.basename(file_path)=="LavaCoverageHelper.java":
+                return True
+        elif self.INJECT_MODE=="unity":
+            if os.path.basename(file_path)=="LavaHelper.cs":
                 return True
 
         return False
@@ -302,7 +337,7 @@ class Instrumenter:
         if self.INJECT_MODE == "unity":
             return
 
-        print(Color('{autoblue}Detecting Templates...{/autoblue}'))
+        self.print_info(Color('{autoblue}Detecting Templates...{/autoblue}'))
         detected_files_list = []
 
         for root, dirnames, filenames in os.walk(self.SOURCE_ABSOLUTE_PATH):
@@ -342,7 +377,7 @@ class Instrumenter:
         script_html += 'var INSTRUMENTER=new jsInstrument("' + \
             self.SERVER_URL + '");\n'
         script_html += 'INSTRUMENTER.InstrumentCode("' + str(
-            uuid.uuid4()) + '","index.html","-1","statement");</script>\n'
+            uuid.uuid4()) + '","index.html","-1","statement","");</script>\n'
         lines = []  # init
 
         self.store_original_content(self.INDEX_FILE_PATH)
@@ -381,7 +416,7 @@ class Instrumenter:
         script_html += 'var INSTRUMENTER=new jsInstrument("' + \
             self.SERVER_URL + '");\n'
         script_html += 'INSTRUMENTER.InstrumentCode("' + str(
-            uuid.uuid4()) + '","index.html","-1","statement");</script>\n'
+            uuid.uuid4()) + '","index.html","-1","statement","");</script>\n'
 
         lines = []  # init
         # get content of index html which is in source and will be compiled
@@ -461,7 +496,7 @@ class Instrumenter:
             script_html += 'var INSTRUMENTER=new jsInstrument("' + \
                 self.SERVER_URL + '");\n'
             script_html += 'INSTRUMENTER.InstrumentCode("' + str(
-                uuid.uuid4()) + '","' + os.path.basename(t) + '","-1","statement");</script>\n'
+                uuid.uuid4()) + '","' + os.path.basename(t) + '","-1","statement","");</script>\n'
             lines = []  # init
             # get content of template html
             self.store_original_content(t)
@@ -511,12 +546,12 @@ class Instrumenter:
 
         # send to backend
         url = self.SERVER_URL + "/" + self.SET_DETECTED_FILES_API_METHOD
-        requests.get(url, params=files)
+        requests.post(url, data=json.dumps(files), headers={'content-type': 'application/json'})
 
         self.send_file_contents(files)
 
         if len(skipped_files) > 0:
-            print(
+            self.print_info(
                 '\n -- some files were skipped because of executable line count equal to 0:')
             self.print_table(["Skipped"], skipped_files)
 
@@ -554,7 +589,7 @@ class Instrumenter:
                 if r.text != "200":
                     output_color = 'autored'
 
-                self.UPLOAD_ENTRIES.append([Color('{autoblue}[' + filename + ']{/autoblue}'), Color(
+                self.UPLOAD_ENTRIES.append([Color('{autocyan}[' + filename + ']{/autocyan}'), Color(
                     '{' + output_color + '}' + r.text + '{/' + output_color + '}')])
 
                 # report progress
@@ -576,7 +611,7 @@ class Instrumenter:
             [Color('{autoblue}Routes upload (' + str(len(routes)) + '){/autoblue}'), Color('{autogreen}' + r.text + '{/autogreen}')])
 
     def upload_executable_lines_count(self):
-        print("\n ---uploading executable line count for all files....------")
+        self.print_info("\n ---uploading executable line count for all files....------")
         ct = 0
         for record in self.FILES_LINE_COUNT:
             ct += 1
@@ -599,6 +634,8 @@ class Instrumenter:
             self.insert_instrument_function_into_js_1()
         elif self.INJECT_MODE == "unity":
             self.insert_instrument_function_into_csharp()
+        elif self.INJECT_MODE=="android":
+            self.insert_instrument_function_into_java()
 
     def copy_ts_module_to_source_folder(self):
         if os.path.exists(os.path.join(
@@ -635,7 +672,7 @@ class Instrumenter:
                     if "using " in file_content[l]:
                         continue
 
-                    p = re.compile(r'[\s]+(class)[\s]*[\w]+')
+                    p = re.compile(r'[\s]+(class)[\s]+[\w]+')
                     var = p.search(file_content[l])
                     if var is not None:
                         # regex result gives me 'public class SomeName : MonoBehaviour {' and I'm
@@ -657,12 +694,9 @@ class Instrumenter:
                             injected_string = var.string[0:var.regs[0][0]] + var.string[var.regs[0][0]:var.regs[0][
                                 1]] + ' LavaHelper.SendStats("' + filename + '","' + str(
                                 uuid.uuid4()) + '","' + str(l + 1) + '","' + \
-                                reg[1] + '");' + var.string[
+                                reg[1] + '","");' + var.string[
                                 var.regs[
                                     0][1]:]
-                            # file_content[l] = var.string + ' INSTRUMENTER.InstrumentCode("' + str(
-                            # uuid.uuid4()) + '","' + filename + '","' + str(l
-                            # + 1) + '","' + reg[1] + '");'
                             file_content[l] = injected_string
 
                             if len(executable_lines) > 0:
@@ -683,7 +717,104 @@ class Instrumenter:
                                      self.convert_path_to_unix(source_file) + '"', shell=True)
 
             if output == 2 or output == 1:
-                print(Color(
+                self.print_info(Color(
+                    '\n {autored}[INJECTION ERROR]{/autored}') + ": FILE STRUCTURE BROKEN AFTER INJECTION: " + filename + ". THIS FILE WILL NOT BE COVERED. IF SITUATION PERSISTS ADD THIS FILE TO EXCLUDED LIST. \n")
+                continue
+
+            # save line count
+
+            record = {}
+            record["file"] = filename
+            record["count"] = line_count
+            record["executable"] = executable_lines
+
+            self.FILES_LINE_COUNT.append(record)
+
+    def insert_instrument_function_into_java(self):
+        for source_file in self.SOURCE_FILES_TO_INSTRUMENT:
+            subprocess.call('AStyle --style=java --break-one-line-headers --add-braces --delete-empty-lines --mode=java "' +
+                            self.convert_path_to_unix(source_file) + '"', shell=True)
+            self.store_original_content(source_file)
+
+            line_count = 0
+            executable_lines = ''
+            import_statement_injected=False
+
+            file_content = []
+            filename = os.path.basename(source_file)
+            with open(source_file, 'r+') as f:
+                file_content = f.readlines()
+                class_name = ''
+                package_statement_line=-1
+
+                for l in range(0, len(file_content)):
+
+                    if "package " in file_content[l]:
+                        if package_statement_line==-1:
+                            package_statement_line=l
+                            #otherwise it was already set...
+                    else:
+                        p = re.compile(r'(class)[\s]+[\w]+')
+                        var = p.search(file_content[l])
+                        if var is not None:
+                            # regex result gives me 'public class SomeName' and I'm
+                            # taking only 'class SomeName', split by space and then take 'SomeName' and
+                            # assign to class_name
+                            class_name = var.string[var.regs[0][0]:var.regs[0][1]].split(' ')[
+                                1]
+
+                  
+                        for reg in self.JAVA_REGEX_LIST:
+                            p = re.compile(reg[0])
+                            var = p.search(file_content[l])
+                            if var is not None:
+                                if reg[1] == "function" and class_name in var.string:
+                                    continue  # skip injecting if this line is a constructor
+                                
+                                if reg[1]=="function":
+                                    # skip all creations looking like: new Thread(new Runnable() {
+                                    # that might appear like functions but we don't want this 
+                                    function_return_type = var.string[var.regs[0][0]:var.regs[0][1]].split(' ')[
+                                0]
+                                    if function_return_type=="new":
+                                        continue 
+
+                                # need to inject right after expression found and
+                                # make sure that original string is intact to avoid
+                                # breaking the file
+                                injected_string = var.string[0:var.regs[0][0]] + var.string[var.regs[0][0]:var.regs[0][
+                                    1]] + ' LavaCoverageHelper.SendStats("' + filename + '","' + str(
+                                    uuid.uuid4()) + '","' + str(l + 1) + '","' + \
+                                    reg[1] + '","");' + var.string[
+                                    var.regs[
+                                        0][1]:]
+                                file_content[l] = injected_string
+
+                                if len(executable_lines) > 0:
+                                    executable_lines += "," + str(l + 1)
+                                else:
+                                    executable_lines = str(l + 1)
+
+                                line_count += 1
+
+                                # if import statement not inserted by now (it means that the file has no imports at all)
+                                # insert import for lava helper right under package statement
+                                if not import_statement_injected:
+                                    file_content[package_statement_line]+=" import "+self.ANDROID_LAVA_HELPER_IMPORT_NAMESPACE+";" # this will be formatted 
+                                    import_statement_injected=True 
+                                break
+
+                f.seek(0)
+                f.truncate()
+                # inject
+                f.writelines(file_content)
+
+            # format after inejction
+            output = subprocess.call('AStyle --style=java --break-one-line-headers --add-braces --delete-empty-lines --mode=java "' +
+                                     self.convert_path_to_unix(source_file) + '"', shell=True)
+
+            if output == 2 or output == 1:
+                self.print_info(Color(
                     '\n {autored}[INJECTION ERROR]{/autored}') + ": FILE STRUCTURE BROKEN AFTER INJECTION: " + filename + ". THIS FILE WILL NOT BE COVERED. IF SITUATION PERSISTS ADD THIS FILE TO EXCLUDED LIST. \n")
                 continue
 
@@ -727,14 +858,14 @@ class Instrumenter:
 
                                 file_content[l] = 'INSTRUMENTER.InstrumentCode("' + str(
                                     uuid.uuid4()) + '","' + filename + '","' + str(l + 1) + '","' + reg[
-                                    1] + '");' + var.string
+                                    1] + '","");' + var.string
 
                             else:
                                 #file_content[l]=var.string+' INSTRUMENTER.InstrumentCode("' + str(uuid.uuid4()) + '","' + filename + '","' + str(l+1) + '","' + reg[1] + '");'
                                 injected_string = var.string[0:var.regs[0][0]] + var.string[var.regs[0][0]:var.regs[0][
                                     1]] + ' INSTRUMENTER.InstrumentCode("' + str(
                                     uuid.uuid4()) + '","' + filename + '","' + str(l + 1) + '","' + reg[
-                                    1] + '");' + var.string[var.regs[0][1]:]
+                                    1] + '","");' + var.string[var.regs[0][1]:]
                                 file_content[l] = injected_string
 
                             if len(executable_lines) > 0:
@@ -754,7 +885,7 @@ class Instrumenter:
                 'prettier --write "' + self.convert_path_to_unix(js_file) + '"', shell=True)
 
             if output == 2:
-                print(Color('\n {autored}[INJECTION ERROR]{/autored}') + ": FILE STRUCTURE BROKEN AFTER INJECTION: " +
+                self.print_info(Color('\n {autored}[INJECTION ERROR]{/autored}') + ": FILE STRUCTURE BROKEN AFTER INJECTION: " +
                       filename + ". THIS FILE WILL NOT BE COVERED. IF SITUATION PERSISTS ADD THIS FILE TO EXCLUDED LIST. \n")
                 continue
 
@@ -837,10 +968,7 @@ class Instrumenter:
                             # make sure that original string is intact to avoid
                             # breaking the file
                             injected_string = var.string[0:var.regs[0][0]] + var.string[var.regs[0][0]:var.regs[0][1]] + ' INSTRUMENTER.InstrumentCode("' + str(
-                                uuid.uuid4()) + '","' + filename + '","' + str(l + 1) + '","' + reg[1] + '");' + var.string[var.regs[0][1]:]
-                            # file_content[l] = var.string + ' INSTRUMENTER.InstrumentCode("' + str(
-                            # uuid.uuid4()) + '","' + filename + '","' + str(l
-                            # + 1) + '","' + reg[1] + '");'
+                                uuid.uuid4()) + '","' + filename + '","' + str(l + 1) + '","' + reg[1] + '","");' + var.string[var.regs[0][1]:]
                             file_content[l] = injected_string
 
                             if len(executable_lines) > 0:
@@ -861,7 +989,7 @@ class Instrumenter:
                 'prettier --write "' + self.convert_path_to_unix(source_file) + '"', shell=True)
 
             if output == 2:
-                print(Color('\n {autored}[INJECTION ERROR]{/autored}') + ": FILE STRUCTURE BROKEN AFTER INJECTION: " +
+                self.print_info(Color('\n {autored}[INJECTION ERROR]{/autored}') + ": FILE STRUCTURE BROKEN AFTER INJECTION: " +
                       filename + ". THIS FILE WILL NOT BE COVERED. IF SITUATION PERSISTS ADD THIS FILE TO EXCLUDED LIST. \n")
                 continue
 
@@ -906,7 +1034,12 @@ class Instrumenter:
         for r in rows:
             data.append(r)
         output = AsciiTable(data)
+        logging.info(str(output.table))
         print output.table
+
+    def print_info(self,msg):
+        print(msg)
+        logging.info(msg)
 
 
 if __name__ == "__main__":
@@ -914,12 +1047,11 @@ if __name__ == "__main__":
         description='Get test coverage for specified app.')
     parser.add_argument('configPath', metavar='J', type=str, nargs='+',
                         help='Absolute path to config json file. Required')
-    # parser.add_argument('triggerBuildNumber',metavar='V', type=str,nargs='+',help='build number that triggered this test session')
     args = parser.parse_args()
 
     # store config json path
     json_path = args.configPath[0]
-    print Color('{autoblue}[Parsing JSON Config]{/autoblue}') + ":" + json_path
+    print(Color('{autoblue}[Parsing JSON Config]{/autoblue}') + ":" + json_path)
 
     instrumenter = Instrumenter()
     instrumenter.prepare(json_path)

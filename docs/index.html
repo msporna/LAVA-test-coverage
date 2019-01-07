@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="author" content="Michal Sporna">
-    <meta name="description" content="Open source tool for measuring test coverage - supports Unity3D, AngularJS and other web projects">
+    <meta name="description" content="Open source tool for measuring test coverage - supports Unity3D, Android and other web projects">
     <meta http-equiv="content-language" content="en-us" />
 	<meta name="keywords" content="test coverage,code coverage,unity test coverage,measure test efficiency,tools for qa engineers">
   
@@ -114,7 +114,7 @@
 					<div class="row">
 						<div class="col-md-8 col-md-offset-2">
 							<h1 class="to-animate">Improve your tests.</h1>
-							<h2 class="to-animate">Lava Test Coverage is an open source tool that generates detailed test coverage report from black box test sessions. It shows exactly which code lines were executed during testing and which were missed. It currently supports Unity3D, AngularJS and web apps written in pure JS.</h2>
+							<h2 class="to-animate">Lava Test Coverage is an open source tool that generates detailed test coverage report from black box test sessions. It shows exactly which code lines were executed during testing and which were missed. It currently supports Unity3D (c#), Android (java) and javascript.</h2>
 						</div>
 					</div>
 				</div>
@@ -284,28 +284,29 @@
 			
 				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
 					<i class="icon to-animate-2 icon-present"></i>
-					<h3>Get Test Coverage</h3>
-					<p>Measure how far your test cases written for Unity3D, AngularJS or pure JS project reach. Measurement happens under the hood while your&rsquo;re driving your tests. The tool is designed to work with black box testing. Your interaction with the software is reflected in the coverage report.</p>
+					<h3>Gather coverage at runtime</h3>
+					<p>Coverage for Unity3D,Android and javascript happens on the fly as you are performing your functionl testing.</p>
 				</div>
 				<div class="clearfix visible-sm-block"></div>
 				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
 						<i class="icon to-animate-2 icon-pie-chart"></i>
 						<h3>Detailed Reports</h3>
-						<p>Reports contain multiple sections showing overall coverage across all files, by each source or by module. Module contains any of the sources assigned by user - it is used to categorize sources. Also, when a specific source is clicked, details popup shows up with executed code lines highlighted in green and missed highlighted in yellow.</p>
+						<p>Get report for build consisting of source files and lines triggered by your testing and execution timeline showing sources sorted by execution order ascending. Reports are saved to drive in html format.</p>
 					</div>
-				<div class="clearfix visible-sm-block"></div>
-			
+					<div class="clearfix visible-sm-block"></div>
 				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
-					<i class="icon to-animate-2 icon-game-controller"></i>
-					<h3>Interactive Demo</h3>
-					<p>There is a web browser based game called LAVA_SIMULATOR taking you, the player, through the setup process of Lava Test Coverage and getting your first test coverage report in a Linux-like environment. Learn by playing! <a href='https://msporna.github.io/LAVA-test-coverage/lava_game/' target='_blank'>PLAY HERE</a> or <a href='https://youtu.be/gyeNUG-V4D0' target='_blank'>WATCH GAMEPLAY</a></p>
-				</div>
-				<div class="clearfix visible-sm-block"></div>
-				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
-						<i class="icon to-animate-2 icon-disc"></i>
-						<h3>Ships with Examples</h3>
-						<p>There are 3 examples showcasing usage of the tool from A to Z:<ul><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-Unity-game'>Getting test coverage for Unity game</a></li><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-Angular-app'>getting test coverage for angular app (+selenium,java tests)</a></li><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-web-app'>getting test coverage for a js web app(+selenium,robot framework,python tests)</a></li></ul><br> </p>
+						<i class="icon to-animate-2 icon-cogs"></i>
+						<h3>Works with CI process</h3>
+						<p>Assign build number and tag name to each coverage session to relate to current version of software being tested.</p>
 					</div>
+					<div class="clearfix visible-sm-block"></div>
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+						<i class="icon to-animate-2 icon-check-square"></i>
+						<h3>Selective coverage</h3>
+						<p>Modules functionality enables you to gather coverage only for selected source files (or for all)</p>
+					</div>
+				
+				
 					<div class="clearfix visible-sm-block"></div>
 			
 				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
@@ -323,9 +324,20 @@
 				<div class="clearfix visible-sm-block"></div>
 			
 				
-				
+				<div class="clearfix visible-sm-block"></div>
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+						<i class="icon to-animate-2 icon-disc"></i>
+						<h3>Ships with Examples</h3>
+						<p>There are 3 examples showcasing usage of the tool from A to Z:<ul><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-Unity-game'>Getting test coverage for Unity game</a></li><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-Android-app'>getting test coverage for Android app </a></li><li><a href='https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-web-app'>getting test coverage for a js web app(+selenium,robot framework,python tests)</a></li></ul><br> </p>
+					</div>
 			
-				
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-game-controller"></i>
+					<h3>Interactive Demo</h3>
+					<p>There is a web browser based game called LAVA_SIMULATOR taking you, the player, through the setup process of Lava Test Coverage and getting your first test coverage report in a Linux-like environment. <a href='https://msporna.github.io/LAVA-test-coverage/lava_game/' target='_blank'>Learn by playing in your browser!</a></p>
+				</div>
 			
 			</div>
 		</div>
@@ -349,13 +361,7 @@
 					<div class="fh5co-person text-center to-animate">
 						<figure><img src="images/avatar.jpg" alt="Person1"></figure>
 						<h3>Michal Sporna</h3>
-						<span class="fh5co-position">Creator&amp;Main Contributor</span>
-						<p>Most of the code coverage tools are for unit tests. This tool means to be suited for functional or end2end tests done by QA engineers. As I&rsquo;m QA engineer, I wanted to cobtribute something to this community so I made this project in my spare time.</p>
-						<ul class="social social-circle">
-						
-							<li><a href="https://twitter.com/msporna"><i class="icon-twitter"></i></a></li>
-						
-						</ul>
+						<span class="fh5co-position">Creator&amp;Main Contributor</span></p>
 					</div>
 				</div>
 			
@@ -370,7 +376,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 section-heading text-center to-animate">
-					<h2>Stats</h2>
+					<h2>Some Fake Stats</h2>
 				</div>
 			</div>
 			<div class="row">
@@ -378,7 +384,7 @@
 				<div class="col-md-3 col-sm-6 col-xs-12">
 					<div class="fh5co-counter to-animate">
 						<i class="fh5co-counter-icon icon-vector to-animate-2"></i>
-						<span class="fh5co-counter-number js-counter" data-from="0" data-to="62" data-speed="5000" data-refresh-interval="50">62</span>
+						<span class="fh5co-counter-number js-counter" data-from="0" data-to="100" data-speed="5000" data-refresh-interval="50">62</span>
 						<span class="fh5co-counter-label">Commits</span>
 					</div>
 				</div>
@@ -386,7 +392,7 @@
 				<div class="col-md-3 col-sm-6 col-xs-12">
 					<div class="fh5co-counter to-animate">
 						<i class="fh5co-counter-icon icon-code to-animate-2"></i>
-						<span class="fh5co-counter-number js-counter" data-from="0" data-to="3700" data-speed="5000" data-refresh-interval="50">3700</span>
+						<span class="fh5co-counter-number js-counter" data-from="0" data-to="4000" data-speed="5000" data-refresh-interval="50">3700</span>
 						<span class="fh5co-counter-label">Lines of code</span>
 					</div>
 				</div>

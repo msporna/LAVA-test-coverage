@@ -11,9 +11,3 @@ Most recent Unity version that I tested against: unity 2018.2.1f1. Build target:
 6.  Create a new test session in Lava dashboard
 7.  Start a web server to host the example web app by running server.py script that can be found in examples/unity_demo (default url: localhost:8787) and navigate to the build folder where index.html resides
 8.  Play the game and view the coverage as described in: https://github.com/msporna/LAVA-test-coverage/wiki/Get-the-coverage
-
-folder contents:
-
-<p>-ProjectSettings</o>
-<p>-Assets</p>
-<p>-python web server (2x)</p>

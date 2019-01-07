@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2018 by Michal Sporna and contributors.  See AUTHORS
+Copyright (c) 2016-2019 by Michal Sporna and contributors.  See AUTHORS
 for more details.
 
 Some rights reserved.
@@ -89,11 +89,11 @@ function doCleanup() {
     modulesSettingsSourcesTree = undefined;
     modulesSettingsModulesTree = undefined;
 
-    var modulesSettingsLastCheckedSources = [];
-    var modulesSettingsCheckedModules = [];
-    var modulesSettingsSourcesTreeSuppressEvent = false;
-    var modulesSettingsModulesTreeSuppressEvent = false;
-    var modulesSettingsCheckedModuleSources = [];
+    modulesSettingsLastCheckedSources = [];
+    modulesSettingsCheckedModules = [];
+    modulesSettingsSourcesTreeSuppressEvent = false;
+    modulesSettingsModulesTreeSuppressEvent = false;
+    modulesSettingsCheckedModuleSources = [];
 }
 
 function showModulesTree() {
@@ -254,9 +254,6 @@ function showUnassignedFilesTree() {
 
         if (sources.length > 0) {
 
-
-
-
             if (modulesSettingsSourcesTree == undefined) {
                 //and the one with yet unassigned souce files
                 modulesSettingsSourcesTree = $('#jstree_2').jstree({
@@ -402,10 +399,10 @@ function addFileToSelectedModule() {
         })
 
 
-    }).done(function (data) {
+    }).done(function (data, textStatus, xhr) {
 
 
-        if (data == "200") {
+        if (xhr.status == 200) {
             //refresh
             showModulesTree();
             showUnassignedFilesTree();
@@ -434,10 +431,10 @@ function removeFileFromSelectedModule() {
         })
 
 
-    }).done(function (data) {
+    }).done(function (data, textStatus, xhr) {
 
 
-        if (data == "200") {
+        if (xhr.status == 200) {
             //refresh
             showModulesTree();
             showUnassignedFilesTree();
@@ -470,8 +467,8 @@ function createModule(moduleName) {
         data: moduleName
 
 
-    }).success(function (data) {
-        if (data == "200") {
+    }).success(function (data, textStatus, xhr) {
+        if (xhr.status == 200) {
             showModulesTree();
         } else if (data == "duplicate") {
             alert("Module with that name already exists!");
@@ -499,10 +496,10 @@ function removeModule() {
         })
 
 
-    }).done(function (data) {
+    }).done(function (data,xhr) {
 
 
-        if (data == "200") {
+        if (xhr.status== 200) {
             //refresh
             showModulesTree();
             showUnassignedFilesTree();
