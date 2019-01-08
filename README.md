@@ -61,3 +61,5 @@ There are 3 examples available:
 2. [getting test coverage for java Android app](https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-Android-app)
 3.  [getting test coverage for a js web app(+selenium,robot framework,python tests)](https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-web-app)
 
+# CURRENT VERSION
+3
