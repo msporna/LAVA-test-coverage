@@ -26,7 +26,7 @@ The tool is aimed for QA engineers that want to see what % of the tested app the
 
 ![setup](https://github.com/msporna/LAVA-test-coverage/blob/master/docs/screenshots/readme/client1.PNG)
 ![report](https://github.com/msporna/LAVA-test-coverage/blob/master/docs/screenshots/readme/report1.PNG)
-![report](https://github.com/msporna/LAVA-test-coverage/blob/master/docs/screenshots/readme/report3.PNG)
+![report](https://github.com/msporna/LAVA-test-coverage/blob/master/docs/screenshots/readme/report3.png)
 ![executed_lines](https://github.com/msporna/LAVA-test-coverage/blob/master/docs/screenshots/readme/preimprovement.gif)
 
 
