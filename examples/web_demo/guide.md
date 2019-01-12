@@ -1,6 +1,6 @@
 1.  go to /test directory and run `pip install -r requirements.txt` to
     install requirements
-2.  Perform all of the steps described here: https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-simple-web-app - 1 NOTE:
+2.  Perform all of the steps described here: https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-web-app - 1 NOTE:
     add "jquery.js" to 'source_to_exclude' list in config.json.
 3.  start a web server to host the example web app by running server.py script that can be found in examples/web_demo/app
 4.  go to localhost:[your_port]:8787 (default port of the above server)
