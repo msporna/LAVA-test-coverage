@@ -2,9 +2,11 @@
 
 # WHAT IS THIS?
 
-This is a test coverage tool that is intended to work with black box functional tests. It does not matter what language your tests are written in, the tool is rest api based (Flask) so communication happens independently. It can work with automatic and manual tests. It gathers coverage on the fly, as app is running and testing is being done.
+This is a test coverage tool that is intended to work with black box functional tests. It does not matter what language your tests are written in or if you perform manual testing instead of automated. Source code of app under test is modified to contain probes (and then it's compiled along with them) that report back to LAVA's backend which processes the statistics. It gathers coverage stats on the fly, as app is running and testing is being done. 
 
-The tool is aimed for QA engineers that want to see what % of the tested app their functional tests cover.
+The tool is aimed for QA engineers that want to see what % of the tested app's code their functional tests cover.
+
+More on how it works [here](https://github.com/msporna/LAVA-test-coverage/wiki/How-it-works)
 
 # FEATURES
 
