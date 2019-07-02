@@ -40,12 +40,13 @@ import sqlite3
 import uuid
 import base64
 import json
-import create_database
 from flask_cors import CORS
-from flask import render_template, request, Flask, jsonify, redirect
+from flask import render_template, request, Flask, jsonify, redirect,abort
 from gevent.pywsgi import WSGIServer
-
 from flask_api import FlaskAPI, status, exceptions
+
+from create_database import create_connection, create_db, close_connection, create_tags_table
+
 
 CONNECTION_STRING = 'instrument.db'
 CONFIG = {}  # dict holding key/value of config entries
@@ -157,7 +158,7 @@ def get_instrument_token():
 def set_detected_files():
     data = json.loads(request.data)
 
-    for key, value in data.iteritems():
+    for key, value in data.items():
 
         file, file_extension = os.path.splitext(value)
 
@@ -246,7 +247,7 @@ def send_instrumentation_stats():
                     file_id, active_session[0], datetime.datetime.now().strftime(
                         "%Y-%m-%d %H:%M:%S"), data["file"],
                     int(data["related_code_line"]), data["line_guid_p"], data["inject_type"],datetime.datetime.strptime(data["send_date"], '%Y-%m-%d %H:%M:%S:%f'),data["custom_value"]))
-            except e:
+            except Exception as e:
                 print(e)
 
     else:
@@ -324,7 +325,7 @@ def get_files_content():
             for s in stats:
                 executed_line_numbers_list.append(s[5])
             break
-    decoded_content = base64.b64decode(content)
+    decoded_content = base64.b64decode(content).decode("utf-8")
     return jsonify(decoded_content_string=decoded_content, executed_lines=executed_line_numbers_list, executable_lines=executable_lines)
 
 
@@ -427,10 +428,9 @@ def get_sources():
 
 @app.route("/create_module", methods=["POST"])
 def create_module():
-    data = request.data
+    data = str(request.data,"utf-8")
 
-    module_already_exists, module = check_if_module_exists(
-        data)  # returns true/false and module object if exists
+    module_already_exists, module = check_if_module_exists(data)  # returns true/false and module object if exists
     if module_already_exists:
         return "duplicate"
 
@@ -502,6 +502,33 @@ def assign_file_to_module():
     insert_new_module(module[1], related_files)
 
     return '',status.HTTP_200_OK
+
+@app.route("/assign_new_files_to_module", methods=["POST"])
+def assign_new_files_to_module():
+    '''
+    assigns all files without module to given module name
+    if module not found,create and then assign
+    :return:
+    '''
+    sources_without_module = get_all_active_files_without_module(ids_only=True)
+    if len(sources_without_module)>0:
+        data = json.loads(request.data)
+        module_name = data["module_name"]
+        module = get_module_by_name(module_name)
+        if module == None:
+            insert_new_module(module_name, sources_without_module)
+        else:
+            # make found module a history, it will be updated via new entry
+            sql = "UPDATE modules SET is_history=1,last_update=:lupd,operation=:op WHERE ID=:mid"
+            param = {"mid": int(module[0]), "lupd": datetime.datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S"), "op": "add_sources"}
+            execute_query(sql, param)
+            insert_new_module(module_name, sources_without_module)
+    else:
+        return "No new sources.",status.HTTP_204_NO_CONTENT
+
+    return "success",status.HTTP_200_OK
+
 
 
 @app.route("/unassign_file", methods=["POST"])
@@ -937,6 +964,7 @@ def execute_query(sql, params=None):
 def execute_select(sql, params, fetchall):
     rows = []
     conn = sqlite3.connect(CONNECTION_STRING)
+    # conn.text_factory = lambda x: x.decode("utf-8")
     cursor = conn.cursor()
     if params is not None:
         cursor.execute(sql, params)
@@ -1165,7 +1193,7 @@ def get_session_by_name(session_name):
     return result
 
 
-def get_all_active_files_without_module():
+def get_all_active_files_without_module(ids_only=False):
     active_modules = get_all_active_modules()
     active_files = get_all_active_files()
     active_files_without_module = []
@@ -1181,7 +1209,10 @@ def get_all_active_files_without_module():
                         found_file = True
                         break
         if not found_file:
-            active_files_without_module.append(active_file)
+            if ids_only:
+                active_files_without_module.append(int(active_file[0]))
+            else:
+                active_files_without_module.append(active_file)
 
     return active_files_without_module
 
@@ -1363,7 +1394,7 @@ def get_config():
 
 def get_config_value(key_p):
     get_config() # refresh config
-    for key, value in CONFIG.iteritems():
+    for key, value in CONFIG.items():
         if key == key_p:
             return value
     return None
@@ -1443,11 +1474,10 @@ def get_covered_routes_for_sessions(session_id_list):
             route_dict["route"] = route[0]
             if route_ids is not None:
                 # some session visited this route because at least 1 route id was obtained from db
-                if route_id != None:
-                    # this route was visited - set it to the dict entry
-                    route_dict["visited"] = "true"
-                else:
-                    route_dict["visited"] = "false"
+                # this route was visited - set it to the dict entry
+                route_dict["visited"] = "true"
+            else:
+                route_dict["visited"] = "false"
             routes_list.append(route_dict)
     return routes_list
 
@@ -1536,7 +1566,7 @@ def insert_new_module(name, related_files):
     '''
     related_files_string = None
     if related_files is not None and len(related_files) > 0:
-        related_files_string = ','.join(related_files)
+        related_files_string = ','.join([str(i) for i in related_files])
     sql = "INSERT INTO modules(module_name,related_files,last_update,is_removed,operation,is_history) VALUES(?,?,?,?,?,?)"
     param = (name.lower(), related_files_string, datetime.datetime.now().strftime(
         "%Y-%m-%d %H:%M:%S"), False, "insert", False)
@@ -1567,6 +1597,15 @@ def get_module(module_id, active_only=True):
     else:
         sql = "SELECT * FROM modules WHERE ID=:mid AND is_history=1"
     param = {"mid": int(module_id)}
+    module = execute_select(sql, param, fetchall=False)
+    return module
+
+def get_module_by_name(module_name,active_only=True):
+    if active_only:
+        sql = "SELECT * FROM modules WHERE module_name=:mn AND is_history=0"
+    else:
+        sql = "SELECT * FROM modules WHERE module_name=:mn AND is_history=1"
+    param = {"mn": module_name}
     module = execute_select(sql, param, fetchall=False)
     return module
 
@@ -1686,7 +1725,9 @@ def get_session_modules(session_id):
     for related_module in related_modules:
         sql = "SELECT * FROM modules WHERE ID=:mid"
         param = {"mid": related_module[0]}
-        modules.append(execute_select(sql, param, fetchall=False))
+        module_row=execute_select(sql, param, fetchall=False)
+        modules.append(module_row)
+
 
     return modules
 
@@ -1805,7 +1846,7 @@ def create_new_test_session(name, related_modules,build,user_id,tag_id):
     if related_modules == None or len(related_modules) == 0 or related_modules[0]=="*":
         related_modules = get_all_module_ids()
     for module in related_modules:
-        print("getting files for module: " + str(module))
+        print(("getting files for module: " + str(module)))
         related_files = get_related_files_from_module(module)
         for source_id in related_files:
             file_details = get_latest_file_details(source_id)
@@ -2095,7 +2136,6 @@ def prepare_report_page_for_build(build_number,tag_name):
             module_entry = {}
             module_entry["ID"] = module[0]
             module_entry["name"] = module[1]
-            related_files = []
             related_files = module[2].split(',')
             module_entry["files"] = related_files
             module_entry["files_count"] = len(related_files)
@@ -2241,9 +2281,9 @@ def init_db():
     :return:
     '''
     if not os.path.exists("instrument.db"):
-        connection,cursor=create_database.create_connection()
-        create_database.create_db(cursor)
-        create_database.close_connection(connection)
+        connection,cursor=create_connection()
+        create_db(cursor)
+        close_connection(connection)
     else:
         # db exists
         # check if user's db is in latest schema and if not, update specific tables
@@ -2254,52 +2294,52 @@ def init_db():
                  sql = "SELECT * FROM users"
                  results = execute_select(sql, None, fetchall=True)
             except:
-                connection,cursor=create_database.create_connection()
-                create_database.create_users_table(cursor)
-                create_database.close_connection(connection)
+                connection,cursor=create_connection()
+                create_users_table(cursor)
+                close_connection(connection)
 
             # check if tags table exists ,if not create 
             try:
                  sql = "SELECT * FROM tags"
                  results = execute_select(sql, None, fetchall=True)
             except:
-                connection,cursor=create_database.create_connection()
-                create_database.create_tags_table(cursor)
-                create_database.close_connection(connection)
+                connection,cursor=create_connection()
+                create_tags_table(cursor)
+                close_connection(connection)
 
             try:
                  sql = "SELECT * FROM sessions_users_tags"
                  results = execute_select(sql, None, fetchall=True)
             except:
-                connection,cursor=create_database.create_connection()
-                create_database.create_sessions_users_tags_table(cursor)
-                create_database.close_connection(connection)
+                connection,cursor=create_connection()
+                create_sessions_users_tags_table(cursor)
+                close_connection(connection)
 
             try:
                  sql = "SELECT * FROM builds"
                  results = execute_select(sql, None, fetchall=True)
             except:
-                connection,cursor=create_database.create_connection()
-                create_database.create_builds_table(cursor)
-                create_database.close_connection(connection)
+                connection,cursor=create_connection()
+                create_builds_table(cursor)
+                close_connection(connection)
 
 
             try:
                  sql = "SELECT * FROM sessions_builds"
                  results = execute_select(sql, None, fetchall=True)
             except:
-                connection,cursor=create_database.create_connection()
-                create_database.create_session_build_table(cursor)
-                create_database.close_connection(connection)
+                connection,cursor=create_connection()
+                create_session_build_table(cursor)
+                close_connection(connection)
 
 
             try:
                  sql = "SELECT custom_value FROM stats"
                  results = execute_select(sql, None, fetchall=True)
             except:
-                connection,cursor=create_database.create_connection()
-                create_database.update_stats_table_to_v3(cursor)
-                create_database.close_connection(connection)
+                connection,cursor=create_connection()
+                update_stats_table_to_v3(cursor)
+                close_connection(connection)
 
             # assign default owner, tag and build to existing sessions 
             sessions=execute_select("SELECT * FROM sessions", None, fetchall=True)
@@ -2318,9 +2358,9 @@ def init_db():
             except:
                 set_config_value("BUFFER_TIME_BEFORE_CLOSING_SESSION_SECONDS",10)   
             # new columns in sessions table
-            connection,cursor=create_database.create_connection()
-            create_database.update_sessions_table_to_v3(cursor)
-            create_database.close_connection(connection)
+            connection,cursor=create_connection()
+            update_sessions_table_to_v3(cursor)
+            close_connection(connection)
 
             
 

@@ -1,4 +1,4 @@
-Most recent Unity version that I tested against: unity 2018.2.1f1. Build target: web.
+Most recent Unity version that I tested against: unity 2019.3.0a3. Build target: web.
 
 1.  Open project with the latest version of Unity
 2.  Load the 'LAVA' scene from /Scenes and set build target to webGL

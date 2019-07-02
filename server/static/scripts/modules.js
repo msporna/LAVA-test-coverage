@@ -468,10 +468,11 @@ function createModule(moduleName) {
 
 
     }).success(function (data, textStatus, xhr) {
-        if (xhr.status == 200) {
-            showModulesTree();
-        } else if (data == "duplicate") {
+        if (data == "duplicate") {
             alert("Module with that name already exists!");
+        } else if (xhr.status == 200){
+            showModulesTree();
+
         }
 
     });

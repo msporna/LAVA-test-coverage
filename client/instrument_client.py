@@ -246,7 +246,8 @@ class Instrumenter:
         '''
         after instrumenting is done, generate token and store it in file in soruce root
         '''
-        token = base64.b64encode(str(datetime.datetime.now()))
+        token = base64.b64encode(str(datetime.datetime.now()).encode("utf-8"))
+
 
         config_entry = {}
         config_entry["name"] = "INSTRUMENT_TOKEN"
@@ -257,7 +258,7 @@ class Instrumenter:
             pickle.dump(config_entry, file)
 
         self.print_info(Color(
-            '\n {autogreen}Successfully stored instrumentation token: ' + token + '{/autogreen}'))
+            '\n {autogreen}Successfully stored instrumentation token: ' + token.decode('utf-8') + '{/autogreen}'))
 
     def get_path_to_instrumenter_js(self):
         instrument_js_filename = "instrument.js"
@@ -570,7 +571,7 @@ class Instrumenter:
         # 64
         file_contents = {}
         ct = 0
-        for k, v in files.iteritems():
+        for k, v in files.items():
             # k: index number
             # v: file path
             with open(v) as f:
@@ -1007,9 +1008,10 @@ class Instrumenter:
 
     def store_original_content(self, file):
         file = self.convert_path_to_unix(file)
-        with open(file, 'r+') as f:
-            self.SOURCE_ORIGINAL_CONTENT[os.path.basename(
-                file)] = base64.b64encode(f.read())
+        with open(file, 'r+',encoding="utf-8") as f:
+            file_content=f.read() #D
+            self.SOURCE_ORIGINAL_CONTENT[os.path.basename(file)] = base64.b64encode(file_content.encode())
+        return #D
 
     def remove_line_breaks(self, file):
         file_content = []
@@ -1035,7 +1037,7 @@ class Instrumenter:
             data.append(r)
         output = AsciiTable(data)
         logging.info(str(output.table))
-        print output.table
+        print(output.table)
 
     def print_info(self,msg):
         print(msg)
@@ -1051,7 +1053,7 @@ if __name__ == "__main__":
 
     # store config json path
     json_path = args.configPath[0]
-    print(Color('{autoblue}[Parsing JSON Config]{/autoblue}') + ":" + json_path)
+    print((Color('{autoblue}[Parsing JSON Config]{/autoblue}') + ":" + json_path))
 
     instrumenter = Instrumenter()
     instrumenter.prepare(json_path)

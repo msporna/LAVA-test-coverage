@@ -1,6 +1,8 @@
 1. clone LeafPic android app by HoraApps from github: https://github.com/msporna/LeafPic
 1. open it in your favourite android IDE like Android Studio
 1. copy 'lava' folder from lava tool root/helpers/android_helper into leafPic app\app\src\main\java\org\horaapps\leafpic
+    * package name to put into lava helper for android: package org.horaapps.leafpic.lava;
+    * android_lava_helper_namespace: org.horaapps.leafpic.lava.LavaCoverageHelper
 1. https://github.com/msporna/LAVA-test-coverage/wiki/Setup-for-Android-app 
 1. https://github.com/msporna/LAVA-test-coverage/wiki/configure-modules
 1. build the app using graddle

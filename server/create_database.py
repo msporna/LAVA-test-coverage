@@ -147,7 +147,7 @@ def create_db(c):
     c.execute("INSERT INTO config(name,value) VALUES(?,?)",
               ("SERVER_HOST", "0.0.0.0"))
     c.execute("INSERT INTO config(name,value) VALUES(?,?)",
-              ("VERSION", "3.0.0"))
+              ("VERSION", "3.1.0"))
     c.execute("INSERT INTO config(name,value) VALUES(?,?)",
               ("PROJECT_NAME", "Sample Project"))
     c.execute("INSERT INTO config(name,value) VALUES(?,?)",

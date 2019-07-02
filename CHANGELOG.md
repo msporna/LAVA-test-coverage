@@ -1,5 +1,10 @@
 # LAVA Changelog
 
+## Version 3.1 (07.2019)
+- switch to python 3.7
+- added new endpoint: /assign_new_files_to_module --> it will make easier to automatically assign new sources to given module without using UI (improved CI support)
+- fixed requirements.txt
+
 ## Version 3 (01.2019)
 
 - added Android (Java) support along with helper class and example

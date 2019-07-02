@@ -1,5 +1,6 @@
 requests
-re
+terminaltables
+colorclass
 flask
 flask-cors
 gevent
