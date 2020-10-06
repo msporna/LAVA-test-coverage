@@ -14,7 +14,7 @@ More on how it works [here](https://github.com/msporna/LAVA-test-coverage/wiki/H
     - it can be done for: 
         - Unity3D games (c#)
         - Android (Java) apps
-        - Javascript web apps
+        - Javascript web apps (vanilla)
 - web based dashboard for viewing coverage reports and managing coverage sessions
 - html report is automatically saved to drive after each coverage session and can be easily shared
 - exposed rest API allows easy integration with any CI tool
